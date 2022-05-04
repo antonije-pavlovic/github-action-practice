@@ -1,6 +1,24 @@
 name: Actions workflow
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - 'feature/*' # matches feature/featA, feature/featB
+      - 'feature/**' # matches feature/feat/A
+      - '!feature/featC' # ignore this branche
+    tags:
+      - "v1.*"
+    paths:
+      - '**.js' # matches all .js files
+      - '!**filename.js'
+#  repository_dispatch:
+#   types: ["build"]
+#  schedule:
+#    - cron: "0/5 * * * *"
+#  push:
+#  pull_request:
+#    types: [ closed, assigned, opened, reopened ]
 
 jobs:
   run-github-actions:
@@ -14,8 +32,6 @@ jobs:
           echo $GITHUB_REPOSITORY
           echo $GITHUB_WORKSPACE
           echo "${{ github.token }}"
-#          git clone git@github:$GITHUB_REPOSITORY
-#         git checkout $GITHUB_SHA
       - name: Checkout
         uses: actions/checkout@v1
       - name: List files after checkout
